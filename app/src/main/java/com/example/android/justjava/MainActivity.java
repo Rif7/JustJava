@@ -18,23 +18,38 @@ import java.text.NumberFormat;
  * This app displays an order form to order coffee.
  */
 public class MainActivity extends AppCompatActivity {
-    int numberOfCoffes;
+    int quantity;
     static final double oneCupPrice = 2.55;
+
+    MainActivity() {
+        quantity = 2;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        numberOfCoffes = 0;
+        display(quantity);
+        displayPrice(quantity *oneCupPrice);
     }
 
     /**
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        numberOfCoffes++;
-        display(numberOfCoffes);
-        displayPrice(numberOfCoffes*oneCupPrice);
+        displayPrice(quantity *oneCupPrice);
+    }
+
+    public void increment(View view) {
+        quantity++;
+        display(quantity);
+    }
+
+    public void decrement(View view) {
+        if (quantity > 0) {
+            quantity--;
+            display(quantity);
+        }
     }
 
     /**
