@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayPrice(double price) {
         TextView quantityTextView = (TextView) findViewById(R.id.price_text_view);
-        quantityTextView.setText(NumberFormat.getCurrencyInstance().format(price));
+        String priceText = "Total:  " + NumberFormat.getCurrencyInstance().format(price);
+        priceText += "\nThank You!";
+        quantityTextView.setText(priceText);
     }
 
 }
