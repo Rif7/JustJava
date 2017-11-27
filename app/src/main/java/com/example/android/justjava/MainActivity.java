@@ -21,14 +21,11 @@ public class MainActivity extends AppCompatActivity {
     int quantity;
     static final double oneCupPrice = 2.55;
 
-    MainActivity() {
-        quantity = 2;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        quantity = 0;
         display(quantity);
         displayPrice(quantity *oneCupPrice);
     }
@@ -40,11 +37,17 @@ public class MainActivity extends AppCompatActivity {
         displayPrice(quantity *oneCupPrice);
     }
 
+    /**
+     * This method is called when the plus button is clicked.
+     */
     public void increment(View view) {
         quantity++;
         display(quantity);
     }
 
+    /**
+     * This method is called when the minus button is clicked.
+     */
     public void decrement(View view) {
         if (quantity > 0) {
             quantity--;
