@@ -16,19 +16,33 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import java.text.NumberFormat;
 
+
 /**
  * This app displays an order form to order coffee.
  */
 public class MainActivity extends AppCompatActivity {
-    int quantity;
+    int quantity = 0;
     static final double oneCupPrice = 2.55;
     static final double whippedCreamPrice = 0.45;
+    static final double chocolatePrice = 0.30;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("quantity", quantity);
+        TextView quantityTextView = (TextView) findViewById(R.id.order_summary_text_view);
+        outState.putString("orderSummary", quantityTextView.getText().toString());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        quantity = 0;
+        if(savedInstanceState != null)
+        {
+            quantity = savedInstanceState.getInt("quantity");
+            displayMessage(savedInstanceState.getString("orderSummary"));
+        }
         displayQuantity(quantity);
     }
 
@@ -39,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         double oneCubTotalPrice = oneCupPrice;
         if (hasWhippedCream()) {
             oneCubTotalPrice += whippedCreamPrice;
+        }
+        if (hasChocolate()) {
+            oneCubTotalPrice += chocolatePrice;
         }
         return quantity * oneCubTotalPrice ;
     }
@@ -73,6 +90,11 @@ public class MainActivity extends AppCompatActivity {
         return whippedCreamCheckBox.isChecked();
     }
 
+    private boolean hasChocolate() {
+        CheckBox chocolateCreamCheckBox = (CheckBox) findViewById(R.id.chocolate_check_box);
+        return chocolateCreamCheckBox.isChecked();
+    }
+
     private String getAnswer(boolean statement) {
         return statement ? "Yes" : "No";
     }
@@ -94,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         Log.v("MAinActivity", "Has whipped cream? " + getAnswer(hasWhippedCream()));
         String priceText = "Name: Kapitan Kunal";
         priceText += "\nAdd whipped cream? " + getAnswer(hasWhippedCream());
+        priceText += "\nAdd chocolate cream? " + getAnswer(hasChocolate());
         priceText += "\nQuantity: " + quantity;
         priceText += "\nTotal: " + NumberFormat.getCurrencyInstance().format(orderPrice);
         priceText += "\nThank You!";
