@@ -10,11 +10,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/name_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:hint="@string/name"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="toppings"
+            android:text="@string/toppings"
             android:textAllCaps="true"
             android:textColor="@android:color/darker_gray"
             android:textSize="16sp" />
@@ -24,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Whipped cream"
+            android:text="@string/whipped_cream"
             android:paddingLeft="24dp"
             android:textSize="16sp"
             android:paddingStart="24dp" />
@@ -34,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Chocolate"
+            android:text="@string/chocolate"
             android:paddingLeft="24dp"
             android:textSize="16sp"
             android:paddingStart="24dp" />
@@ -43,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Quantity"
+            android:text="@string/quantity"
             android:textAllCaps="true"
             android:textColor="@android:color/darker_gray"
             android:textSize="16sp" />
@@ -78,30 +85,12 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="order summary"
-            android:textAllCaps="true"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/order_summary_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="0.00 zl"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:onClick="submitOrder"
-            android:text="order" />
+            android:text="@string/order" />
 
     </LinearLayout>
 

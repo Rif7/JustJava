@@ -1,19 +1,13 @@
 package com.example.android.justjava;
-/**
- * IMPORTANT: Add your package below. Package name can be found in the project's AndroidManifest.xml file.
- * This is the package name our example uses:
- *
- * package com.example.android.justjava;
- *
- */
-
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.text.NumberFormat;
 
 
@@ -21,7 +15,7 @@ import java.text.NumberFormat;
  * This app displays an order form to order coffee.
  */
 public class MainActivity extends AppCompatActivity {
-    int quantity = 0;
+    int quantity = 2;
     static final double oneCupPrice = 2.55;
     static final double whippedCreamPrice = 0.45;
     static final double chocolatePrice = 0.30;
@@ -30,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("quantity", quantity);
-        TextView quantityTextView = (TextView) findViewById(R.id.order_summary_text_view);
-        outState.putString("orderSummary", quantityTextView.getText().toString());
     }
 
     @Override
@@ -41,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState != null)
         {
             quantity = savedInstanceState.getInt("quantity");
-            displayMessage(savedInstanceState.getString("orderSummary"));
         }
         displayQuantity(quantity);
     }
@@ -64,25 +55,47 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        displayMessage(createOrderSummary(calculatePrice()));
+        composeEmail("JustJava Order for " + getInputName());
     }
 
+    public void composeEmail(String subject) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, createOrderSummary(calculatePrice()));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
     /**
      * This method is called when the plus button is clicked.
      */
     public void increment(View view) {
-        quantity++;
-        displayQuantity(quantity);
+        if (quantity < 100) {
+            quantity++;
+            displayQuantity(quantity);
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Cannot order more coffees", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     /**
      * This method is called when the minus button is clicked.
      */
     public void decrement(View view) {
-        if (quantity > 0) {
+        if (quantity > 1) {
             quantity--;
             displayQuantity(quantity);
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Cannot order less coffees", Toast.LENGTH_SHORT);
+            toast.show();
         }
+    }
+
+    private String getInputName() {
+        EditText inputNameView = findViewById(R.id.name_input);
+        return inputNameView.getText().toString();
     }
 
     private boolean hasWhippedCream() {
@@ -96,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getAnswer(boolean statement) {
-        return statement ? "Yes" : "No";
+        return statement ? getString(R.string.yes) : getString(R.string.no);
     }
 
     /**
@@ -113,20 +126,13 @@ public class MainActivity extends AppCompatActivity {
      * @return text summary
      */
     private String createOrderSummary(double orderPrice) {
-        Log.v("MAinActivity", "Has whipped cream? " + getAnswer(hasWhippedCream()));
-        String priceText = "Name: Kapitan Kunal";
-        priceText += "\nAdd whipped cream? " + getAnswer(hasWhippedCream());
-        priceText += "\nAdd chocolate cream? " + getAnswer(hasChocolate());
-        priceText += "\nQuantity: " + quantity;
-        priceText += "\nTotal: " + NumberFormat.getCurrencyInstance().format(orderPrice);
-        priceText += "\nThank You!";
+        String priceText = getString(R.string.Name) + ": " + getInputName();
+        priceText += "\n" + getString(R.string.add_whipped_cream) +"? " + getAnswer(hasWhippedCream());
+        priceText += "\n" + getString(R.string.add_chocolate_cream) + "? " + getAnswer(hasChocolate());
+        priceText += "\n" + getString(R.string.quantity) + " : " + quantity;
+        priceText += "\n" + getString(R.string.total) + " : " + NumberFormat.getCurrencyInstance().format(orderPrice);
+        priceText += "\n" + getString(R.string.thank_you) + " !";
         return priceText;
     }
-
-    private void displayMessage(String message) {
-        TextView quantityTextView = (TextView) findViewById(R.id.order_summary_text_view);
-        quantityTextView.setText(message);
-    }
-
 
 }
